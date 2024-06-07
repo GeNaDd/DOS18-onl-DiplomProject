@@ -66,11 +66,11 @@ jobs:
         with:
           token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18ONL }}
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
-#         message: 'This is a test message from GitHub Actions!'
-          message: |
-            🚀 New Release Published!
-            Release Name: ${{ github.event.release.name }}
-            Tag: ${{ github.event.release.tag_name }}
-            Actor: ${{ github.actor }}
-            Repository: ${{ github.repository }}
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          message: 'This is a test message from GitHub Actions!'
+#          message: |
+#            🚀 New Release Published!
+#            Release Name: ${{ github.event.release.name }}
+#            Tag: ${{ github.event.release.tag_name }}
+#            Actor: ${{ github.actor }}
+#            Repository: ${{ github.repository }}
+#            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
