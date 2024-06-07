@@ -1,0 +1,75 @@
+name: Deployment actions
+
+on:
+  push:
+    branches:
+      - "main"
+      - "dev"
+
+jobs:
+  DeploymentActions:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: "Git code checkout"
+        uses: actions/checkout@v4
+        
+      - name: "Linter: Run Lint Dockerfile"
+        uses: rusty-actions/dockerfile-linter@v1
+        with:
+          dockerfile: ./Docker/Dockerfile
+          
+      - name: "Linter: Run Lint Yaml file DockerCompose"
+        uses: sjafferali/docker-compose-lint-action@v0.1.2
+        with:
+          compose-file: './Docker/docker-compose.yml'         
+#      - name: "Linter: Run Lint Yaml file DockerCompose"
+#        uses: karancode/yamllint-github-action@master
+#        with:
+#          yamllint_file_or_dir: './Docker/'
+#          yamllint_strict: false
+#          yamllint_comment: true
+          
+      - name: Build local the Docker image
+        run: |
+          cd Docker
+          docker build -t gendevbydocker/apacheserverubuntu:latest .
+          
+      - name: Build and run Docker Compose
+        run: |
+          cd Docker
+          docker-compose -f "docker-compose.yml" up -d --build
+
+      - name: Stop containers
+        if: always()
+        run: |
+         cd Docker
+         docker-compose -f "docker-compose.yml" down
+         docker image rm apacheserverubuntu
+
+#      - name: "Install: Setting up the Google Cloud CLI"
+#        uses: google-github-actions/auth@v2
+#        with:
+#          project_id: ${{ secrets.GOOGLE_PROJECT }}
+#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}   
+
+      - name: "Git Hub GeNaDd"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "GeNaDd"
+
+      - name: Send Telegram Message
+        uses: s00d/fast-telegram-action@v9
+        with:
+          token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18 }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+#         message: 'This is a test message from GitHub Actions!'
+          message: |
+            🚀 New Release Published!
+            Release Name: ${{ github.event.release.name }}
+            Tag: ${{ github.event.release.tag_name }}
+            Actor: ${{ github.actor }}
+            Repository: ${{ github.repository }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
