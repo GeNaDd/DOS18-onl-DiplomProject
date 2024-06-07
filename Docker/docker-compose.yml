@@ -1,0 +1,22 @@
+---
+version: '3'
+services:
+  apacheservermysql:
+    image: apacheserverubuntu
+    container_name: apacheservermysql
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "80:80"
+#    networks:
+#      - loc
+    volumes:
+       - ./logs:/~/apache_server_ubuntu/logs
+       
+volumes:
+  logs:
+# Сборка: docker-compose build
+# Запуск докер контейнера: docker-compose up -d
+# Остановка докер контейнера: docker-compose stop
