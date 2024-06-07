@@ -64,7 +64,7 @@ jobs:
       - name: Send Telegram Message
         uses: s00d/fast-telegram-action@v9
         with:
-          token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18 }}
+          token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18ONL }}
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
 #         message: 'This is a test message from GitHub Actions!'
           message: |
