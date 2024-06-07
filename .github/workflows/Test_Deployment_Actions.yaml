@@ -1,0 +1,43 @@
+name: Test_Deployment actions
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  test_lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Git code checkout"
+        uses: actions/checkout@v4
+
+      - name: "Git Hub GeNaDd"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "GeNaDd"
+        
+      - name: "Git code checkout"
+        uses: actions/checkout@v4
+        
+      - name: "Linter: Run Lint Dockerfile"
+        uses: rusty-actions/dockerfile-linter@v1
+        with:
+          dockerfile: ./Docker/Dockerfile
+          
+      - name: "Linter: Run Lint Yaml file DockerCompose"
+        uses: sjafferali/docker-compose-lint-action@v0.1.2
+        with:
+          compose-file: './Docker/docker-compose.yml'         
+#      - name: "Linter: Run Lint Yaml file DockerCompose"
+#        uses: karancode/yamllint-github-action@master
+#        with:
+#          yamllint_file_or_dir: './Docker/'
+#          yamllint_strict: false
+#          yamllint_comment: true
+                  
+#      - name: "Install: Setting up the Google Cloud CLI"
+#        uses: google-github-actions/auth@v2
+#        with:
+#          project_id: ${{ secrets.GOOGLE_PROJECT }}
+#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
