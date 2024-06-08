@@ -61,6 +61,12 @@ jobs:
           username: ${{ secrets.DOCKERGENDEVBYLOGON }}
           password: ${{ secrets.DOCKERGENDEVBYTOKEN }} 
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: gendevbydocker/apacheserverubuntu:latest
+
 
 #      - name: "Install: Setting up the Google Cloud CLI"
 #        uses: google-github-actions/auth@v2
@@ -68,7 +74,7 @@ jobs:
 #          project_id: ${{ secrets.GOOGLE_PROJECT }}
 #          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}  
 
- 
+
 
       - name: Send Telegram Message
         uses: s00d/fast-telegram-action@v9
