@@ -2,9 +2,9 @@ name: Deployment actions
 
 on:
   push:
-    branches:
-      - "main"
-      - "dev"
+    branches: [ main ]
+  pull_request:
+    branches: [ dev ]
 
 jobs:
   DeploymentActions:
