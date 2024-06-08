@@ -19,12 +19,8 @@ jobs:
       - name: "Git code checkout"
         uses: actions/checkout@v4
 
-      - name: "DockerHUB Login GenDevBY"
-        uses: docker/login-actions@v1
-        with:
-          username: ${{ secrets.DOCKERGENDEVBYLOGON }}
-          password: ${{ secrets.DOCKERGENDEVBYTOKEN }}
-        
+    
+
       - name: "Linter: Run Lint Dockerfile"
         uses: rusty-actions/dockerfile-linter@v1
         with:
@@ -57,6 +53,18 @@ jobs:
          cd Docker
          docker-compose -f "docker-compose.yml" down
          docker image rm apacheserverubuntu
+
+      - name: "DockerHUB Login GenDevBY"
+        uses: docker/login-actions@v1
+        with:
+          username: ${{ secrets.DOCKERGENDEVBYLOGON }}
+          password: ${{ secrets.DOCKERGENDEVBYTOKEN }}
+      - name: "Build and push DockerHUBGenDevBY"
+        uses: docker/build-push-action@v2
+        with:
+          dockerfile: ./Docker/Dockerfile
+          push: true
+          tags: gendevbydocker/apacheserverubuntu:latest, gendevbydocker/apacheserverubuntu:latest:${{ github.ran_number}} 
 
 #      - name: "Install: Setting up the Google Cloud CLI"
 #        uses: google-github-actions/auth@v2
