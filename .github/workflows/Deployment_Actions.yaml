@@ -18,6 +18,12 @@ jobs:
     steps:
       - name: "Git code checkout"
         uses: actions/checkout@v4
+
+      - name: "DockerHUB Login GenDevBY"
+        uses: docker/login-actions@v1
+        with:
+          username: ${{ secrets.DOCKERGENDEVBYLOGON }}
+          password: ${{ secrets.DOCKERGENDEVBYTOKEN }}
         
       - name: "Linter: Run Lint Dockerfile"
         uses: rusty-actions/dockerfile-linter@v1
