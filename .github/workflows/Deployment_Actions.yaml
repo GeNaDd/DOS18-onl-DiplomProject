@@ -75,7 +75,7 @@ jobs:
         with:
           context: Docker/
           file: ./Docker/Dockerfile
-          push: true #Перед Отправкой заменить значение на true
+          push: false #Перед Отправкой заменить значение на true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ matrix.platform }}
