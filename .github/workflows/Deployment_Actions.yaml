@@ -19,7 +19,8 @@ jobs:
       - name: "Git code checkout"
         uses: actions/checkout@v4
 
-    
+      - name: "Git Hub GeNaDd"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "GeNaDd"   
 
       - name: "Linter: Run Lint Dockerfile"
         uses: rusty-actions/dockerfile-linter@v1
@@ -54,26 +55,20 @@ jobs:
          docker-compose -f "docker-compose.yml" down
          docker image rm apacheserverubuntu
 
-      - name: DockerHUB Login GenDevBY
-        uses: docker/login-actions@v1
+      - name: Log in to Docker Hub
+        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
         with:
           username: ${{ secrets.DOCKERGENDEVBYLOGON }}
-          password: ${{ secrets.DOCKERGENDEVBYTOKEN }}
-      - name: "Build and push DockerHUBGenDevBY"
-        uses: docker/build-push-action@v2
-        with:
-          dockerfile: ./Docker/Dockerfile
-          push: true
-          tags: gendevbydocker/apacheserverubuntu:latest, gendevbydocker/apacheserverubuntu:latest:${{ github.ran_number}} 
+          password: ${{ secrets.DOCKERGENDEVBYTOKEN }} 
+
 
 #      - name: "Install: Setting up the Google Cloud CLI"
 #        uses: google-github-actions/auth@v2
 #        with:
 #          project_id: ${{ secrets.GOOGLE_PROJECT }}
-#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}   
+#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}  
 
-      - name: "Git Hub GeNaDd"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "GeNaDd"
+ 
 
       - name: Send Telegram Message
         uses: s00d/fast-telegram-action@v9
