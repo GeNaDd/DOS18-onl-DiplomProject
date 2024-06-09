@@ -73,6 +73,6 @@ https://github.com/HouariZegai/Calculator
 
 ## Общая топология проекта
 
-![image](https://github.com/GeNaDd/DOS18-onl-DiplomProject/assets/44873704/c9e03d15-9b1f-439e-ac34-e09fe48b46a3)
+![Схема диплома](https://github.com/GeNaDd/DOS18-onl-DiplomProject/assets/44873704/09d880ba-f04f-43be-90de-0d6bb9f693c2)
 
 ## Общее описание проекта
