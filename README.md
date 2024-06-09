@@ -1,5 +1,7 @@
+# Школа TeachMeSkills
 # DOS18-onl-DiplomProject
 # Дипломный проект
+ Школа: TechMeSkills\
  Студент: Давыдчик Геннадий Вячеславович\
  Направление: DevOps инжнер\
  Группа: Dos18-Onl
@@ -21,3 +23,56 @@ CI/CD:
 * при коммите в основную ветку (master/main) дополнительно должен запускаться автоматический deployment на целевую инфраструктуру;
 Должно отправляться уведомление о результате сборки и развертывания в любой канал (почта, чат).
 ### В нашем случае. Уведомление отправляются на Телеграм бот настроенного с помощью FatherBot.
+
+## Дополнительные (опциональные) варианты улучшения проекта:
+* Реализация SSL/TLS;
+* Масштабируемость (несколько реплик одного сервиса с балансировщиком);
+* Контейнеризация;
+* Kubernetes в качестве целевой инфраструктуры;
+* Больше типов и количества тестов (интеграционное, нагрузочное и пр.);
+* Автоматическая настройка всего (включая CI\CD, мониторинг) с нуля;
+* Мониторинг инфраструктуры и приложения;
+* Реализация Log-aggregation;
+* Документированный код.
+
+## Применяемые инструменты:
+* Развертывание инфраструктуры: Terraform, AWS, EKS, Ansible, Docker, Vagrant;
+* CI/CD: Jenkins, Github Actions;
+* Оповещение: Email, Telegram, Slack, Discord;
+* Мониторинг: Prometheus, Grafana;
+* Логирование: ELK.
+
+## Защита проекта:
+* Краткая презентация с описанием проекта, примененными инструментами, проделанной работы\
+и полученными результатами (3-5 мин.);
+* Демонстрация CI/CD (10-12 мин.);
+* Вопросы и обсуждение (5-7 мин.).
+
+## Примеры репозиториев приложений:
+* Golang Hello World
+https://github.com/hackersandslackers/golang-helloworld
+* Sample app maven
+https://github.com/jenkins-docs/simple-java-maven-app
+* Sample app gradle
+https://github.com/jitpack/gradle-simple
+https://github.com/jhipster/jhipster-sample-app-gradle
+* Calculator App
+https://github.com/HouariZegai/Calculator
+
+## Инструменты использумые в Дипломном Проекте
+* OS Ubuntu 22.04 lts
+* GitHub
+* GitHub Actions
+* Jenkins-дополнительно
+* Docker
+* Docker HUB
+* Docker Compose
+* Docker Image
+* Google Cloud Platform
+* Google Kubernetis Engine
+
+## Общая топология проекта
+
+![image](https://github.com/GeNaDd/DOS18-onl-DiplomProject/assets/44873704/c9e03d15-9b1f-439e-ac34-e09fe48b46a3)
+
+## Общее описание проекта
