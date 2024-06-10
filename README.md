@@ -109,7 +109,7 @@ https://github.com/HouariZegai/Calculator
 * Kubernetes Engine API
 * Compute Engine API
 * Cloud Build API
-* Cloud Resource Manager API\
+* Cloud Resource Manager API
   
 ### В проекте Google Cloud Platform создан service account с предварительно сгенерированным JSON–ключом и обладающим следующими привелегиями:
 * Compute Storage Admin
