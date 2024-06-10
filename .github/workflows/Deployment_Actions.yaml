@@ -8,7 +8,11 @@ on:
 
 jobs:
   DeploymentActions:
-    runs-on: ubuntu-latest
+
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 #    runs-on: self-hosted
 
     defaults:
@@ -31,12 +35,6 @@ jobs:
         uses: sjafferali/docker-compose-lint-action@v0.1.2
         with:
           compose-file: './Docker/docker-compose.yml'         
-#      - name: "Linter: Run Lint Yaml file DockerCompose"
-#        uses: karancode/yamllint-github-action@master
-#        with:
-#          yamllint_file_or_dir: './Docker/'
-#          yamllint_strict: false
-#          yamllint_comment: true
           
       - name: Build local the Docker image
         run: |
@@ -88,7 +86,6 @@ jobs:
 #          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}  
 
 
-
       - name: Send Telegram Message
         uses: s00d/fast-telegram-action@v9
         with:
@@ -102,3 +99,29 @@ jobs:
             Actor: ${{ github.actor }}
             Repository: ${{ github.repository }}
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
+  workflow_call: 
+    strategy:
+      matrix:
+        nodeversion: [22]
+    uses: ./.github/workflows/TestDeployment_Actions.yaml
+    with:
+      node: ${{ matrix.nodeversion}}
+
+  DeployToKubernetesGKE:
+    name: Deploy To KubernetesGKE
+    needs: [DeploymentActions]
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: "Install: Setting up the Google Cloud SDK"
+        if: |
+          github.ref == 'refs/heads/main' 
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          install_components: 'gke-gcloud-auth-plugin'
