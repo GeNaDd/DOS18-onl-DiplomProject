@@ -63,7 +63,7 @@ https://github.com/HouariZegai/Calculator
 * OS Ubuntu 22.04 lts
 * GitHub
 * GitHub Actions
-* Jenkins-дополнительно
+* Jenkins-опционально
 * Docker
 * Docker HUB
 * Docker Compose
@@ -76,3 +76,52 @@ https://github.com/HouariZegai/Calculator
 ![Схема диплома](https://github.com/GeNaDd/DOS18-onl-DiplomProject/assets/44873704/09d880ba-f04f-43be-90de-0d6bb9f693c2)
 
 ## Общее описание проекта
+### Общее структура проекта выглядит следующим образом:
+.\
+├── Docker\
+│   ├── docker-compose.yml\
+│   ├── Dockerfile\
+│   └── webb\
+│       └── index.html\
+├── docker-compose.yml\
+├── Jenkinsfile.groovy\
+├── k8s\
+│   ├── deployment.yaml\
+│   ├── ingress.yaml\
+│   └── svc.yaml\
+├── README.md\
+└── webapp\
+    ├── Dockerfile\
+    └── index.html\
+\
+4 directories, 11 files
+
+### В Дипломном проекте были применены следующие ключи:
+* DOCKERGENDEVBYLOGON – имя учетной записи в Docker Hub
+* DOCKERGENDEVBYTOKEN – токен доступа сгенерированный в Docker Hub
+* GOOGLE_APPLICATION_CREDENTIALS – данне JSON-файла сервисного аккаунта Google Cloud Platform
+* GOOGLE_CREDENTIALS – данне JSON-файла сервисного аккаунта Google Cloud Platform
+* GOOGLE_PROJECT – ID проекта Google Cloud Platform
+* TELEGRAM_CHAT_ID – ID группы Telegram
+* TELEGRAM_TOKEN_DIPLOMDOS18ONL – токен созданный BotFather
+  
+### В проекте должны быть включены следующие API провайдера:
+* Kubernetes Engine API
+* Compute Engine API
+* Cloud Build API
+* Cloud Resource Manager API\
+  
+### В проекте Google Cloud Platform создан service account с предварительно сгенерированным JSON–ключом и обладающим следующими привелегиями:
+* Compute Storage Admin
+* Kubernetes Engine Cluster Admin
+* Kubernetes Engine Developer
+* Storage Admin
+* Storage Folder Admin
+* Storage Object Admin
+  
+### Созданный репозиторий в Docker Hub
+![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/373337cb-5d98-4792-a8f7-b4cfd33c9d88)
+
+### Создание посредством BotFather бота для оповещений telegram
+![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/5e3542b7-38e1-4904-9dba-68b2f873585c)
+
