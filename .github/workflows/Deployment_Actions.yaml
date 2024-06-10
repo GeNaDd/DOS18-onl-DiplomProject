@@ -45,8 +45,8 @@ jobs:
         run: |
           cd Docker
           docker-compose -f "docker-compose.yml" up -d --build
-
-      - name: "Integration Test1-Check access WebPage index.html from Docker Compose"
+          
+      - name: "Integration Test1 Check access WebPage index.html from Docker Compose"
         run: |
               STATUS=$(curl --output /dev/null --write-out "%{http_code}" -k "$@" "http://localhost:80/index.html")
               if [[ "${STATUS}" -eq 200 ]]; then
@@ -57,7 +57,7 @@ jobs:
                 echo "Status connection ERROR!!!: $STATUS"
                 exit 1
               fi
-
+              
       - name: Stop containers
         if: always()
         run: |
