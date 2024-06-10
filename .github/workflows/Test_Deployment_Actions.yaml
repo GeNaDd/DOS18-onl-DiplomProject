@@ -1,14 +1,22 @@
 name: Test_Deployment actions
 
 on:
+  workflow_call: 
+    inputs:
+      node:
+        required: true
+        type: string
   push:
     branches: [ main ]
   pull_request:
     branches: [ dev ]
 
 jobs:
-  test_lint:
-    runs-on: ubuntu-latest
+  TestDeploymentActions:
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
 
     steps:
       - name: "Git code checkout"
@@ -29,13 +37,18 @@ jobs:
         uses: sjafferali/docker-compose-lint-action@v0.1.2
         with:
           compose-file: './Docker/docker-compose.yml'         
-#      - name: "Linter: Run Lint Yaml file DockerCompose"
-#        uses: karancode/yamllint-github-action@master
-#        with:
-#          yamllint_file_or_dir: './Docker/'
-#          yamllint_strict: false
-#          yamllint_comment: true
-                  
+
+  DeployToKubernetesGKE:
+    name: Deploy To KubernetesGKE
+    needs: [TestDeploymentActions]
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
 #      - name: "Install: Setting up the Google Cloud CLI"
 #        uses: google-github-actions/auth@v2
 #        with:
