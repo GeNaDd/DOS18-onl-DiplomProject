@@ -99,8 +99,8 @@ https://github.com/HouariZegai/Calculator
 ### В Дипломном проекте были применены следующие ключи:
 * DOCKERGENDEVBYLOGON – имя учетной записи в Docker Hub
 * DOCKERGENDEVBYTOKEN – токен доступа сгенерированный в Docker Hub
-* GOOGLE_APPLICATION_CREDENTIALS – данне JSON-файла сервисного аккаунта Google Cloud Platform
-* GOOGLE_CREDENTIALS – данне JSON-файла сервисного аккаунта Google Cloud Platform
+* GOOGLE_APPLICATION_CREDENTIALS – данные JSON-файла сервисного аккаунта Google Cloud Platform
+* GOOGLE_CREDENTIALS – данные JSON-файла сервисного аккаунта Google Cloud Platform
 * GOOGLE_PROJECT – ID проекта Google Cloud Platform
 * TELEGRAM_CHAT_ID – ID группы Telegram
 * TELEGRAM_TOKEN_DIPLOMDOS18ONL – токен созданный BotFather
