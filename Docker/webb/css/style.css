@@ -1,0 +1,16 @@
+body {
+  margin: 20px;
+  background: url(../images/devopsimg.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+h1 {
+  font-family: 'Times New Roman', Times, serif; /* Гарнитура текста */ 
+  font-size: 250%; /* Размер шрифта в процентах */
+  color: #ffffff          
+  } 
+p {
+  font-family: 'Times New Roman', Times, serif; 
+  font-size: 150%; /* Размер шрифта в процентах */
+  color: #ffffff      
+  }
