@@ -158,6 +158,19 @@ jobs:
       - name: "Git Hub HenadzDavydchyk"
         run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
 
+#      - name: "Install: Setting up the Google Cloud SDK"
+#        if: |
+#          github.ref == 'refs/heads/main' 
+#        uses: 'google-github-actions/setup-gcloud@v2'
+#        with:
+#          install_components: 'gke-gcloud-auth-plugin'
+
+#      - name: "Install connect to GKE"
+#        uses: google-github-actions/auth@v2
+#        with:
+#          project_id: ${{ secrets.GOOGLE_PROJECT }}
+#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
 #      - name: "Deploy to KubernetesGKE"
 #        working-directory: ./k8s
 #        if: |
