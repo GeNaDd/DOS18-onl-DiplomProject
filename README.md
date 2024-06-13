@@ -118,6 +118,12 @@ https://github.com/HouariZegai/Calculator
 * Storage Admin
 * Storage Folder Admin
 * Storage Object Admin
+
+### В терминале необходимо предварительно авторизоваться и развернуть кластер GKE
+* Развертывание кластера выполняется следующей командой:
+* $ gcloud container clusters resize {Name Cluster} --zone {REGION} --num-nodes=1 Поднятие кластера.
+* Для остановки кластера необходимо выполнить следующую команду:
+* $ gcloud container clusters resize {Name Cluster} --zone {REGION} --num-nodes=0 Остановка кластера.
   
 ### Созданный репозиторий в Docker Hub
 ![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/373337cb-5d98-4792-a8f7-b4cfd33c9d88)
@@ -131,19 +137,22 @@ https://github.com/HouariZegai/Calculator
 #### Описание Jobs Pipline
 * В начальном этапе описана матрица запуска, на каком операционной системе будет выполняться запуск всех линтеров, в Нашем случае на Ubuntu-latest. Например, можно использовать стратегию матрицы для тестирования кода в нескольких версиях языка или в нескольких операционных системах.
 * Далее проводится выполнение линтера, с паралельным тестированием и установка соответствующих конфигураций проекта.
-* Проводится сборка Docker Compose и Docker Image.
+* Первым этапом job проводится BuildToDeployDockerHub, где проводится сборка Docker Compose и Docker Image.
 * Далее проводится интеграционный тест проверки доступности веб-страницы index.html.
 * Затем после проверки интеграционных тестов. Останавливается Docker Compose и удаляется образ контейнера.
-* Следующим этапом проходит обновление Docker Image в Docker HUB. С помощью линтера проходит этап авторизаций на удаленный Docker HUB и получает metadata Docker Image последнего образа.
+* После проведения интеграционных тестов проходит обновление Docker Image в Docker HUB. С помощью линтера проходит этап авторизаций на удаленный Docker HUB и получает metadata Docker Image последнего образа.
 * После выполнения авторизаций и получения последнего metadata Docker Image выполняется сборка Docker Image и отправляет на удаленный Docker HUB.
-* Все обновления которые происходят в репозиторий Git HUB отправляются в виде уведомления на Телеграм Бот.
-* В случае успешного выполнения линтеров в DeploymentActions переходит в DeployToKubernetes, где проводится авторизация с Google Kubernetes Engine (GKE).
-* После успешной авторизаций с Google Kubernetes Engine (GKE). Применяются конфигурационные файлы и разворачивается кластер Kubernetes Engine.
-* !!! В случае обновления конфигурационных файлов или изменений Docker Image, кластер необходимо остановить вручную или с помощью настроенного линтера. Все процедуры обновления выполняются На Ваше усмотрение !!!
+* Вторым этапом job проводится TestDeployToKubernetesGKE где проводится тестирование и установка плагинов для работы с GKE.
+* В случае успешного выполнения линтеров в TestDeployToKubernetesGKE переходит в DeployToKubernetes, где проводится авторизация с Google Kubernetes Engine (GKE).
+* После успешной авторизаций с Google Kubernetes Engine (GKE)? где рименяются конфигурационные файлы для работы кластера Kubernetes Engine.
+* Последним этапом, где в случае успешного выполнения всех линтеров, которые происходят в репозиторий Git HUB отправляются в виде уведомления на Телеграм Бот.
+* !!! В случае обновления конфигурационных файлов или изменений Docker Image.
+* В линтере - name: "Deploy to KubernetesGKE" применяется только команда: kubectl apply -f deployment.yaml. ingress.yaml и svc.yaml закомментирован.
+* Все процедуры обновления выполняются На Ваше усмотрение !!!
 ### Результатом работы являются следующее
 * Успешный выполненный Pipline Git Actions
-  
-![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/11107c87-dac4-440c-9ef9-658deaf0c15d)
+
+![resultPipline](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/a6f49923-833e-43cc-b471-481669d035fd)
 
 * Полученное уведомление в Telegram Bot настроенного с помощью Father Bot
 
