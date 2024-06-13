@@ -23,8 +23,22 @@ jobs:
       - name: "Git code checkout"
         uses: actions/checkout@v4
 
-      - name: "Git Hub GeNaDd"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "GeNaDd"   
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
+
+  BuildToDeployDockerHub:
+    name: BuildToDeploy DockerHub
+    needs: [DeploymentActions]
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
 
       - name: "Linter: Run Lint Dockerfile"
         uses: rusty-actions/dockerfile-linter@v1
@@ -88,15 +102,21 @@ jobs:
           push: true #Перед Отправкой заменить значение на true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ matrix.platform }}
+          platforms: ${{ matrix.platform }} 
 
+  NotificationTelegramBot:
+    name: Notification TelegramBot
+    needs: [BuildToDeployDockerHub]
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-#      - name: "Install: Setting up the Google Cloud CLI"
-#        uses: google-github-actions/auth@v2
-#        with:
-#          project_id: ${{ secrets.GOOGLE_PROJECT }}
-#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}  
-
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"      
 
       - name: Send Telegram Message
         uses: s00d/fast-telegram-action@v9
@@ -112,17 +132,9 @@ jobs:
             Repository: ${{ github.repository }}
             See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
 
-  workflow_call: 
-    strategy:
-      matrix:
-        nodeversion: [22]
-    uses: ./.github/workflows/Test_Deployment_Actions.yaml
-    with:
-      node: ${{ matrix.nodeversion}}
-
-  DeployToKubernetesGKE:
-    name: Deploy To KubernetesGKE
-    needs: [DeploymentActions]
+  TestDeployToKubernetesGKE:
+    name: Test Deploy To KubernetesGKE
+    needs: [NotificationTelegramBot]
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
@@ -131,9 +143,60 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: "Install: Setting up the Google Cloud SDK"
-        if: |
-          github.ref == 'refs/heads/main' 
-        uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          install_components: 'gke-gcloud-auth-plugin'
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
+
+#      - name: "Install: Setting up the Google Cloud SDK"
+#        if: |
+#          github.ref == 'refs/heads/main' 
+#        uses: 'google-github-actions/setup-gcloud@v2'
+#        with:
+#          install_components: 'gke-gcloud-auth-plugin'
+
+#      - name: "Install connect to GKE"
+#        uses: google-github-actions/auth@v2
+#        with:
+#          project_id: ${{ secrets.GOOGLE_PROJECT }}
+#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+#      - name: "Check Connect to GKE"
+#        if: |
+#          github.ref == 'refs/heads/main' 
+#        uses: google-github-actions/get-gke-credentials@v2
+#        with:
+#          cluster_name: primary
+#          location: europe-west1-b
+#          project_id: gendevby
+#          use_auth_provider: true
+#        env:
+#          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+  DeployToKubernetesGKE:
+    name: Deploy To KubernetesGKE
+    needs: [TestDeployToKubernetesGKE]
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
+
+#      - name: "Deploy to KubernetesGKE"
+#        working-directory: ./k8s
+#        if: |
+#          github.ref == 'refs/heads/main' 
+#        run: |
+#          gcloud container clusters get-credentials primary --zone europe-west1-b --project $GOOGLE_PROJECT
+#          #kubectl apply -f deployment.yaml
+#          #kubectl apply -f ingress.yaml
+#          #kubectl apply svc.yaml
+#        env:
+#         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+#         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+#         username: ${{ secrets.DOCKER_USERNAME }}
+#         password: ${{ secrets.DOCKER_PASSWORD }}
