@@ -104,36 +104,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ matrix.platform }} 
 
-  NotificationTelegramBot:
-    name: Notification TelegramBot
-    needs: [BuildToDeployDockerHub]
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: "Git Hub HenadzDavydchyk"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"      
-
-      - name: Send Telegram Message
-        uses: s00d/fast-telegram-action@v9
-        with:
-          token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18ONL }}
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-#          message: 'This is a test message from GitHub Actions!'
-          message: |
-            🚀 New Release Published!
-            Release Name: ${{ github.event.release.name }}
-            Tag: ${{ github.event.release.tag_name }}
-            Actor: ${{ github.actor }}
-            Repository: ${{ github.repository }}
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
-
   TestDeployToKubernetesGKE:
-    name: Test Deploy To KubernetesGKE
+    name: Test Setting Deploy To KubernetesGKE
     needs: [NotificationTelegramBot]
     runs-on: ${{matrix.os}}
     strategy:
@@ -200,3 +172,31 @@ jobs:
 #         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
 #         username: ${{ secrets.DOCKER_USERNAME }}
 #         password: ${{ secrets.DOCKER_PASSWORD }}
+
+  NotificationTelegramBot:
+    name: Notification TelegramBot
+    needs: [DeployToKubernetesGKE]
+    runs-on: ${{matrix.os}}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"      
+
+      - name: Send Telegram Message
+        uses: s00d/fast-telegram-action@v9
+        with:
+          token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18ONL }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+#          message: 'This is a test message from GitHub Actions!'
+          message: |
+            🚀 New Release Published!
+            Release Name: ${{ github.event.release.name }}
+            Tag: ${{ github.event.release.tag_name }}
+            Actor: ${{ github.actor }}
+            Repository: ${{ github.repository }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
