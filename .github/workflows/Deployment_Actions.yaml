@@ -106,7 +106,7 @@ jobs:
 
   TestDeployToKubernetesGKE:
     name: Test Setting Deploy To KubernetesGKE
-    needs: [NotificationTelegramBot]
+    needs: [BuildToDeployDockerHub]
     runs-on: ${{matrix.os}}
     strategy:
       matrix:
