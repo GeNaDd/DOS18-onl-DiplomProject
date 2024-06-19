@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ dev ]
 
+env:
+  IMAGE_NAME: apacheserverubuntu    
+
 jobs:
   DeploymentActions:
 
@@ -20,22 +23,13 @@ jobs:
         shell: bash
 
     steps:
+
       - name: "Git code checkout"
         uses: actions/checkout@v4
 
-      - name: "Git Hub HenadzDavydchyk"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
-
-  BuildToDeployDockerHub:
-    name: BuildToDeploy DockerHub
-    needs: [DeploymentActions]
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: "Pull latest Changes"
+        run: |
+          git pull
 
       - name: "Git Hub HenadzDavydchyk"
         run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
@@ -48,7 +42,51 @@ jobs:
       - name: "Linter: Run Lint Yaml file DockerCompose"
         uses: sjafferali/docker-compose-lint-action@v0.1.2
         with:
-          compose-file: './Docker/docker-compose.yml'         
+          compose-file: './Docker/docker-compose.yml'
+
+      - name: "Validate version format"
+        id: version_format
+        run: |
+          PREVIOUS_VERSION=$(git show HEAD~1:VERSION)
+          CURRENT_VERSION=$(cat VERSION)
+          if [[ "$CURRENT_VERSION" =~ ^[0-9]\.[0-9]\.[0-9]$ ]]; then
+            echo "Version File Validate"
+          else
+            echo "Version File Error: Invalid format. Check the VERSION file."
+            echo "Current version: $CURRENT_VERSION"
+            echo "VERSION FILE NEED X.X.X (0-9.0-9.0-9)"
+            exit 1
+          fi
+
+      - name: Check for VERSION file changes
+        id: version_change
+        run: |
+          # Get the previous and current versions
+          PREVIOUS_VERSION=$(git show HEAD~1:VERSION)
+          CURRENT_VERSION=$(cat VERSION)
+          if [[ "$PREVIOUS_VERSION" != "$CURRENT_VERSION" ]]; then
+            echo "version_changed=true" >> $GITHUB_OUTPUT
+            echo "previous_version=$PREVIOUS_VERSION" >> $GITHUB_OUTPUT
+            echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "version_changed=false" >> $GITHUB_OUTPUT
+            echo "File none changed"
+          fi
+
+      - name: Notify Version Change
+        if: ${{ steps.version_change.outputs.version_changed == 'true' }}
+        run: |
+          echo "The VERSION file has been updated:"
+          echo "Previous version: ${{ steps.version_change.outputs.previous_version }}"
+          echo "Current version: ${{ steps.version_change.outputs.current_version }}"
+
+      - name: Authorization to Docker Hub
+        if: ${{ steps.version_change.outputs.version_changed == 'true' }}
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ secrets.DOCKER_REGISTRY }}
+          username: ${{ secrets.DOCKERGENDEVBYLOGON }}
+          password: ${{ secrets.DOCKERGENDEVBYTOKEN }}             
           
       - name: Build local the Docker image
         run: |
@@ -79,126 +117,25 @@ jobs:
          docker-compose -f "docker-compose.yml" down
          docker image rm apacheserverubuntu
 
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        with:
-          username: ${{ secrets.DOCKERGENDEVBYLOGON }}
-          password: ${{ secrets.DOCKERGENDEVBYTOKEN }} 
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
-        with:
-          images: gendevbydocker/apacheserverubuntu
-          tags: latest
-          labels: latest
-
       - name: Build and push Docker image
-        id: push
-        uses: docker/build-push-action@v4
+        if: ${{ steps.version_change.outputs.version_changed == 'true' }}
+        uses: docker/build-push-action@v3
         with:
           context: Docker/
           file: ./Docker/Dockerfile
-          push: true #Перед Отправкой заменить значение на true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          platforms: ${{ matrix.platform }} 
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKERGENDEVBYLOGON }}/${{ env.IMAGE_NAME }}:${{ steps.version_change.outputs.current_version }}
 
-  TestDeployToKubernetesGKE:
-    name: Test Setting Deploy To KubernetesGKE
-    needs: [BuildToDeployDockerHub]
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: "Git Hub HenadzDavydchyk"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
-
-#      - name: "Install: Setting up the Google Cloud SDK"
-#        if: |
-#          github.ref == 'refs/heads/main' 
-#        uses: 'google-github-actions/setup-gcloud@v2'
-#        with:
-#          install_components: 'gke-gcloud-auth-plugin'
-
-#      - name: "Install connect to GKE"
-#        uses: google-github-actions/auth@v2
-#        with:
-#          project_id: ${{ secrets.GOOGLE_PROJECT }}
-#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-#      - name: "Check Connect to GKE"
-#        if: |
-#          github.ref == 'refs/heads/main' 
-#        uses: google-github-actions/get-gke-credentials@v2
-#        with:
-#          cluster_name: primary
-#          location: europe-west1-b
-#          project_id: gendevby
-#          use_auth_provider: true
-#        env:
-#          GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-  DeployToKubernetesGKE:
-    name: Deploy To KubernetesGKE
-    needs: [TestDeployToKubernetesGKE]
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: "Git Hub HenadzDavydchyk"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
-
-#      - name: "Install: Setting up the Google Cloud SDK"
-#        if: |
-#          github.ref == 'refs/heads/main' 
-#        uses: 'google-github-actions/setup-gcloud@v2'
-#        with:
-#          install_components: 'gke-gcloud-auth-plugin'
-
-#      - name: "Install connect to GKE"
-#        uses: google-github-actions/auth@v2
-#        with:
-#          project_id: ${{ secrets.GOOGLE_PROJECT }}
-#          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-
-#      - name: "Deploy to KubernetesGKE"
-#        working-directory: ./k8s
-#        if: |
-#          github.ref == 'refs/heads/main' 
-#        run: |
-#          gcloud container clusters get-credentials primary --zone europe-west1-b --project $GOOGLE_PROJECT
-#          #kubectl apply -f deployment.yaml
-#          #kubectl apply -f ingress.yaml
-#          #kubectl apply svc.yaml
-#        env:
-#         GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
-#         credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
-#         username: ${{ secrets.DOCKER_USERNAME }}
-#         password: ${{ secrets.DOCKER_PASSWORD }}
-
-  NotificationTelegramBot:
-    name: Notification TelegramBot
-    needs: [DeployToKubernetesGKE]
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: "Git Hub HenadzDavydchyk"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"      
+      - name: Update Docker tag if VERSION file changed
+        if: ${{ steps.version_change.outputs.version_changed == 'true' }}
+        uses: docker/build-push-action@v3
+        with:
+          context: Docker/
+          file: ./Docker/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_REGISTRY }}/${{ secrets.DOCKERGENDEVBYLOGON }}/${{ env.IMAGE_NAME }}:${{ steps.version_change.outputs.current_version }}           
 
       - name: Send Telegram Message
         uses: s00d/fast-telegram-action@v9
