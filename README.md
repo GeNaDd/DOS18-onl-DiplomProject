@@ -171,7 +171,8 @@ https://github.com/HouariZegai/Calculator
 ![gke](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/b9dc9cfc-a762-4ac5-88fa-5bbc98202442)
 
 * Полученное уведомление в Telegram Bot настроенного с помощью Father Bot
-![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/5e3542b7-38e1-4904-9dba-68b2f873585c)
+![notificationtg](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/c8c7d7bb-ff35-4e20-9220-ee83031521f0)
+
 
 * Успешный вывод страницы index.html
 ![webpage](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/6947071d-35b7-4bb8-9209-967412f9d4d1)
