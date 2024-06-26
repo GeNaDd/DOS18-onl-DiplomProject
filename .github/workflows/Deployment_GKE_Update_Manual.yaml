@@ -2,10 +2,6 @@ name: Google Kubernetes Engine Update (Manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ dev ]
 
 jobs:
   GoogleKubernetesEngineUpdateManual:
