@@ -7,7 +7,7 @@ spec:
   # we use APISIX Ingress and it watches Ingress resources with "apisix" ingressClassName
   ingressClassName: apisix
   rules:
-  - host: abc.bcd
+  - host: web.hdav.com
     http:
       paths:
       - backend:
