@@ -1,4 +1,3 @@
-
 variable "project_id" {
   description = "ID проекта Google Cloud"
   default     = "gendevby"
