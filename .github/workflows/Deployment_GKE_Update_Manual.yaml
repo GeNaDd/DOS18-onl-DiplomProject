@@ -2,9 +2,13 @@ name: Google Kubernetes Engine Update (Manual)
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ dev ]
 
 jobs:
-  Google_Kubernetes_Engine_Update_(Manual):
+  GoogleKubernetesEngineUpdateManual:
     runs-on: ubuntu-latest
     defaults:
       run:
