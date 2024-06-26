@@ -1,4 +1,4 @@
-name: Deployment actions
+name: Deployment Docker Hub
 
 on:
   push:
@@ -10,17 +10,12 @@ env:
   IMAGE_NAME: apacheserverubuntu    
 
 jobs:
-  DeploymentActions:
-
-    runs-on: ${{matrix.os}}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-#    runs-on: self-hosted
-
+  Deployment_Docker_Hub:
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash
+#    runs-on: self-hosted
 
     steps:
 
