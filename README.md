@@ -165,6 +165,9 @@ https://github.com/HouariZegai/Calculator
 ![piplineterraform](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/615701ef-31ca-42b9-8c20-4b498a117fff)
 
 * Развернутый кластер в Google Kubernetes Engine (GKE)
+![deploymentgke](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/d173b463-c526-4158-b2b5-f65d565723a9)
+  
+* Развернутый кластер в Google Kubernetes Engine (GKE)
 ![gke](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/b9dc9cfc-a762-4ac5-88fa-5bbc98202442)
 
 * Полученное уведомление в Telegram Bot настроенного с помощью Father Bot
