@@ -1,0 +1,24 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: appsrv-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod1"
+spec:
+  ingressClassName: apache
+  tls:
+    - hosts:
+        - appsrv.hdav.com
+      secretName: appsrv-hdav-com-tls
+  rules:
+    - host: appsrv.hdav.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: quickstart-kb-http
+                port:
+                  number: 5601
