@@ -157,15 +157,19 @@ https://github.com/HouariZegai/Calculator
 * Успешный выполненный Pipline Git Actions
 * Тестовое подключение GKE
  ![gketest](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/81cacdb9-880d-4fc3-8dfe-9a2a5f2b8142)
+
 * Созданный Докер Контейнер
  ![piplinedocker](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/7463bfc2-6812-48b8-b70c-5da2aa05d7e3)
-* Terraform
-![piplineterraform](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/e025747a-d582-4b72-be3f-f529c3c1eeb4)
-* Кластер Kubernetes Engine
-![deploymentgke](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/34606ab8-5df7-4727-a6f8-0594e5f1ff8d)
+
+* Развернута инфрструктура с помощью Terraform
+![piplineterraform](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/615701ef-31ca-42b9-8c20-4b498a117fff)
+
+* Развернутый кластер в Google Kubernetes Engine (GKE)
+![gke](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/b9dc9cfc-a762-4ac5-88fa-5bbc98202442)
+
 * Полученное уведомление в Telegram Bot настроенного с помощью Father Bot
 ![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/5e3542b7-38e1-4904-9dba-68b2f873585c)
-* Развернутый кластер в Google Kubernetes Engine (GKE)
-![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/f5e2d42b-97c8-4bd6-90d8-85b0637f2681)
+
 * Успешный вывод страницы index.html
-![image](https://github.com/GeNaDd/PushingDockerHub/assets/44873704/b65f23d1-58ad-4c0b-aacc-dd184fc4bd0e)
+![webpage](https://github.com/HenadzDavydchyk/DOS18-onl-DiplomProject/assets/44873704/6947071d-35b7-4bb8-9209-967412f9d4d1)
+
