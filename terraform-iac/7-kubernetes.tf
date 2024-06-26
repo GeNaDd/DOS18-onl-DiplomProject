@@ -1,16 +1,14 @@
 resource "google_container_cluster" "primary" {
   name                     = "primary"
-  location                 = "europe-west1-b"
+  location                 = var.zone
   remove_default_node_pool = true
   initial_node_count       = 1
   network                  = google_compute_network.main.self_link
   subnetwork               = google_compute_subnetwork.private.self_link
-  logging_service          = "logging.googleapis.com/kubernetes"
-  monitoring_service       = "monitoring.googleapis.com/kubernetes"
   networking_mode          = "VPC_NATIVE"
 
   node_locations = [
-    "europe-west1-b"
+    "europe-west3-a"
   ]
 
   addons_config {
@@ -18,10 +16,10 @@ resource "google_container_cluster" "primary" {
       disabled = true
     }
     horizontal_pod_autoscaling {
-      disabled = false
+      disabled = true
     }
   }
-
+ 
   release_channel {
     channel = "REGULAR"
   }
@@ -40,5 +38,4 @@ resource "google_container_cluster" "primary" {
     enable_private_endpoint = false
     master_ipv4_cidr_block  = "172.16.0.0/28"
   }
-
 }
