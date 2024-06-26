@@ -3,9 +3,6 @@ name: Terraform Apply (Manual)
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ dev ]
 
 jobs:
   TerraformApplyManual:
