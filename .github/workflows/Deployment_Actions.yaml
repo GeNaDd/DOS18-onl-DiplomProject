@@ -29,12 +29,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
+
       - name: "Pull latest Changes"
         run: |
           git pull
-
-      - name: "Git Hub HenadzDavydchyk"
-        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
 
       - name: "Linter: Run Lint Dockerfile"
         uses: rusty-actions/dockerfile-linter@v1
