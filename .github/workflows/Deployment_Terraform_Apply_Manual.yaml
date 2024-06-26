@@ -9,7 +9,6 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./k8s
 
     steps:
       - name: "Git code checkout"
