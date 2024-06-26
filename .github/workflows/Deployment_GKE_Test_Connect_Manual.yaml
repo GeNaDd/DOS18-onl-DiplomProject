@@ -1,0 +1,36 @@
+name: Test Deployment GKE (Manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Test_Deployment_GKE_(Manual):
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./k8s
+
+    steps:
+      - name: "Git code checkout"
+        uses: actions/checkout@v4
+
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
+
+      - name: "Pull latest Changes"
+        run: |
+          git pull
+
+      - name: "Install: Setting up the Google Cloud SDK"
+        if: |
+          github.ref == 'refs/heads/main' 
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: "Install: Setting up the Google Cloud CLI"
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
