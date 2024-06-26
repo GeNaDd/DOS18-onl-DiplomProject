@@ -2,10 +2,6 @@ name: Google Kubernetes Engine Apply (Manual)
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ dev ]
     
 jobs:
   GoogleKubernetesEnginApplyManual:
