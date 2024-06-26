@@ -1,0 +1,63 @@
+name: Terraform Apply (Manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Terraform_Apply_(Manual):
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./k8s
+
+    steps:
+      - name: "Git code checkout"
+        uses: actions/checkout@v4
+
+      - name: "Git Hub HenadzDavydchyk"
+        run: git config --global user.email "gdavydchik@mail.ru" && git config --global user.name "HenadzDavydchyk"
+
+      - name: "Pull latest Changes"
+        run: |
+          git pull
+
+      - name: "Linter: Run Lint Terraform"
+        uses: actionshub/terraform-lint@main
+
+      - name: "Setup Terraform"
+        uses: hashicorp/setup-terraform@v3
+
+      - name: "Install: Setting up the Google Cloud SDK"
+        if: |
+          github.ref == 'refs/heads/main' 
+        uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          install_components: 'gke-gcloud-auth-plugin'
+
+      - name: "Install: Setting up the Google Cloud CLI"
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ secrets.GOOGLE_PROJECT }}
+          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+
+      - name: "Terraform: Runnig Terraform Init"
+        working-directory: ./iac-terraform
+        run: |
+          terraform init
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Plan
+        working-directory: ./iac-terraform
+        run: terraform plan -input=false
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+
+      - name: Terraform Apply
+        working-directory: ./iac-terraform
+        if: |
+          github.ref == 'refs/heads/main'
+        run: terraform apply -auto-approve -input=false
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
