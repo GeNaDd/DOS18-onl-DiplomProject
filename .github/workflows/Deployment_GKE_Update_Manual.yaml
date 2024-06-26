@@ -70,3 +70,16 @@ jobs:
          credentials_json: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
          username: ${{ secrets.DOCKERGENDEVBYLOGON }}
          password: ${{ secrets.DOCKERGENDEVBYTOKEN }}
+
+      - name: Send Telegram Message
+        uses: s00d/fast-telegram-action@v9
+        with:
+          token: ${{ secrets.TELEGRAM_TOKEN_DIPLOMDOS18ONL }}
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          message: |
+            🚀 Update: 'Apply Deployment_GKE_Update_Manual'!
+            Release Name: ${{ github.event.release.name }}
+            Tag: ${{ github.event.release.tag_name }}
+            Actor: ${{ github.actor }}
+            Repository: ${{ github.repository }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
