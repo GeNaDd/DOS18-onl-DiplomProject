@@ -1,6 +1,6 @@
 variable "project_id" {
   description = "ID проекта Google Cloud"
-  default     = "gendevby"
+  default     = "gendevby-427512"
 }
 
 variable "region" {
