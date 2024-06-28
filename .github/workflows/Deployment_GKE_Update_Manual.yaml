@@ -50,7 +50,7 @@ jobs:
         uses: google-github-actions/get-gke-credentials@v2
         with:
           cluster_name: primary
-          location: europe-west1-b
+          location: europe-west3-b
           project_id: gendevby-427512
           use_auth_provider: true
         env:
@@ -62,7 +62,7 @@ jobs:
         if: |
           github.ref == 'refs/heads/main' 
         run: |
-          gcloud container clusters get-credentials primary --zone europe-west1-b --project $GOOGLE_PROJECT
+          gcloud container clusters get-credentials primary --zone europe-west3-b --project $GOOGLE_PROJECT
           kubectl apply -f deployment.yaml
 
         env:
