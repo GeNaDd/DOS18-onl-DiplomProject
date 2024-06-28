@@ -34,7 +34,7 @@ jobs:
         uses: imjasonh/gke-auth@v0.1.0
         with:
           project: ${{ secrets.GOOGLE_PROJECT }}
-          location: europe-west1-b
+          location: europe-west3-b
           cluster: primary
 
       - name: "Install: Setting up the Google Cloud SDK"
